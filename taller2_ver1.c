@@ -174,7 +174,34 @@ int Subset(Set A, Set B){
     }
     return 1;
 }
-//Set Union(){}//Set A + Set B - Intersectiction (A,B)
+Set Union(Set A, Set B){
+    Set NewSet = MakeEmpty(NULL);
+    Position P=A->Next;
+    while(P!=A){
+        int found = 0; 
+        Position Q = B->Next;
+        while (Q != B) {
+            if (P->element == Q->element) {
+                found = 1;
+                break;
+            }
+            else{
+                AddSet(Q->element, NewSet);
+            }
+            Q = Q->Next;
+        }
+
+        if (found) {
+            AddSet(P->element, NewSet);
+        }
+        else{
+            AddSet(P->element, NewSet);
+        }
+
+        P = P->Next;
+    }
+    return NewSet;
+}//Set A + Set B - Intersectiction (A,B)
 Set Intersection(Set A, Set B) {
     Set NewSet = MakeEmpty(NULL);
     Position P = A->Next;
@@ -192,13 +219,32 @@ Set Intersection(Set A, Set B) {
         if (found) {
             AddSet(P->element, NewSet);
         }
-
         P = P->Next;
     }
 
     return NewSet; 
 } //Set A + Set B - Union(A,B)s
-//Set Complement(){} Set B complemento = Set A - Intersection (A,B)
+Set Complement(Set A, Set B){
+    Set NewSet = MakeEmpty(NULL);
+    Position P=B->Next;
+    while(P!=B){
+        int found = 0; 
+        Position Q = A->Next;
+        while (Q != A) {
+            if (P->element == Q->element) {
+                found = 1;
+                break;
+            }
+            Q = Q->Next;
+        }
+
+        if (!found) {
+            AddSet(P->element, NewSet);
+        }
+        P = P->Next;
+    }
+    return NewSet;
+} //Set B complemento = Set A - Intersection (A,B)
 int main() {
     Set A, B, C, D;
     int i;
@@ -229,9 +275,15 @@ int main() {
     //printf("\n%d",Equals(A,B));
     //printf("\n%d",Unequals(A,B));
     //printf("\n%d",Subset(A,B));
-    D = Intersection(A, B);
-    printf("\n%d", D->Next->element);
-    printf("\n%d", D->Next->Next->element);
-    printf("\n%d", D->Next->Next->Next->element);
+   // D = Intersection(A, B);
+    //printf("\n%d", D->Next->element);
+    //printf("\n%d", D->Next->Next->element);
+    D= Complement(A,B);
+    Position P= D->Next;
+    printf("A\n");
+    for(i=0;i<4;i++){
+        printf("%d\n", P->element);
+        P=P->Next;
+    }
     return 0;
 }
